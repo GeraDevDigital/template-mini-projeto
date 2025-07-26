@@ -1,15 +1,15 @@
 // Selecionando elementos do DOM
-const input = document.querySelector('.form input');
-const btnAdicionar = document.querySelector('.button-add');
-const btnLimpar = document.querySelector('.button-clear');
-const lista = document.querySelector('.list ul');
-const chaveStorage = 'meus-interesses';
+const input = document.querySelector(".form input");
+const btnAdicionar = document.querySelector(".button-add");
+const btnLimpar = document.querySelector(".button-clear");
+const lista = document.querySelector(".list ul");
+const chaveStorage = "meus-interesses";
 
 // Atualiza a lista exibida na tela
 function atualizarLista(interesses) {
-  lista.innerHTML = '';
-  interesses.forEach(item => {
-    const li = document.createElement('li');
+  lista.innerHTML = "";
+  interesses.forEach((item) => {
+    const li = document.createElement("li");
     li.textContent = item;
     lista.appendChild(li);
   });
@@ -23,21 +23,21 @@ function carregarInteresses() {
 }
 
 // Adiciona novo item à lista
-btnAdicionar.addEventListener('click', () => {
+btnAdicionar.addEventListener("click", () => {
   const valor = input.value.trim();
-  if (valor === '') return;
+  if (valor === "") return;
 
   const dadosSalvos = localStorage.getItem(chaveStorage);
   const interesses = dadosSalvos ? JSON.parse(dadosSalvos) : [];
 
   interesses.push(valor);
   localStorage.setItem(chaveStorage, JSON.stringify(interesses));
-  input.value = '';
+  input.value = "";
   atualizarLista(interesses);
 });
 
 // Limpa toda a lista
-btnLimpar.addEventListener('click', () => {
+btnLimpar.addEventListener("click", () => {
   localStorage.removeItem(chaveStorage);
   atualizarLista([]);
 });
@@ -51,17 +51,16 @@ setInterval(() => {
 }, 1000);
 
 // Requisição à API do IBGE e exibição da notícia
-fetch('https://servicodados.ibge.gov.br/api/v3/noticias/?tipo=release')
-  .then(response => response.json())
-  .then(data => {
+fetch("https://servicodados.ibge.gov.br/api/v3/noticias/?tipo=release")
+  .then((response) => response.json())
+  .then((data) => {
     const primeiraNoticia = data.items[0];
     const tituloNoticia = primeiraNoticia.titulo;
-    document.querySelector('.title-news-today').textContent = tituloNoticia;
+    document.querySelector(".title-news-today").textContent = tituloNoticia;
   })
-  .catch(error => {
-    console.error('Erro ao buscar notícias do IBGE:', error);
+  .catch((error) => {
+    console.error("Erro ao buscar notícias do IBGE:", error);
   });
-  
 
 // Carregar lista ao iniciar a página
 carregarInteresses();
